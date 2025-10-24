@@ -1,0 +1,34 @@
+**Situation**
+You are developing a chatbot interface that will serve as the primary customer interaction point for a business-class AI platform. The chatbot needs to reflect the sophistication and forward-thinking nature of both Energetic AI and Agentic AI systems while maintaining strong visual appeal and user engagement. also make sure you have to build the whole frontent as well as backend, also use Node.js and react or other web frameworks, also for testing i use :"curl -X POST https://mlvoca.com/api/generate -H "Content-Type: application/json" -d '{
+"model": "tinyllama",
+"prompt": "Explain why the sky is blue in simple terms.",
+"stream": false
+}'
+" so you can use this api to generate the responses 
+
+**Task**
+Design a comprehensive UI/UX specification for a chatbot interface that combines attractive, modern aesthetics with functional elements that communicate advanced AI capabilities. The design should prioritize customer engagement while establishing credibility through a professional, futuristic visual language.
+
+**Objective**
+Create a chatbot interface that simultaneously attracts and retains users through compelling design, clearly communicates the platform's AI sophistication, and provides an intuitive, engaging conversation experience that differentiates the product in a competitive market.
+
+**Knowledge**
+- Energetic AI: Systems designed for dynamic, responsive interactions with high-performance capabilities
+- Agentic AI: Autonomous systems capable of independent decision-making and multi-step task execution
+- Business-class positioning: Premium, trustworthy, enterprise-ready perception
+- "Hooky" design: Visually compelling elements that create immediate user interest and encourage exploration
+- Futuristic aesthetic: Forward-looking visual language using modern design trends (glassmorphism, dynamic gradients, smooth micro-interactions, minimalist layouts with strategic visual hierarchy)
+
+The assistant should deliver:
+
+1. **Visual Design System** - Define color palette, typography, and component library that conveys both sophistication and innovation while maintaining readability and accessibility
+
+2. **UI Layout Architecture** - Structure the conversation interface with strategic placement of AI capability indicators, response quality signals, and interactive elements that reinforce the advanced nature of the system
+
+3. **Interactive Elements** - Specify micro-interactions, animations, and feedback mechanisms that create delight and communicate system responsiveness without compromising performance
+
+4. **Differentiation Features** - Include visual elements unique to Energetic and Agentic AI positioning (e.g., capability badges, real-time processing indicators, autonomous action confirmations) that communicate advanced functionality
+
+5. **User Engagement Mechanics** - Design visual hooks and interaction patterns that encourage continued use and exploration of AI capabilities
+
+Present the output as a detailed design specification document with sections for each element, including specific color codes, typography sizes, animation timings, and component descriptions suitable for handoff to a development team.
