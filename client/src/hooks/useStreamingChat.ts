@@ -103,7 +103,14 @@ export function useStreamingChat(): StreamingChatResult {
       throw new Error("No complete event received");
     }
 
-    await queryClient.invalidateQueries({ queryKey: ["/api/messages"] });
+    // Manually update the query cache instead of invalidating
+    const currentMessages = queryClient.getQueryData<Message[]>(["/api/messages"]) || [];
+    queryClient.setQueryData<Message[]>(["/api/messages"], [
+      ...currentMessages,
+      finalData.userMessage,
+      finalData.aiMessage,
+    ]);
+
     setIsStreaming(false);
     setStreamingContent("");
 
