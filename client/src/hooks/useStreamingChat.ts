@@ -26,28 +26,7 @@ export function useStreamingChat(): StreamingChatResult {
     setError(null);
 
     try {
-      // Try backend API first (for localhost development)
-      try {
-        const response = await fetch("/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            content,
-            stream: true,
-          }),
-        });
-
-        if (response.ok && response.body) {
-          // Backend is available, use it
-          return await handleBackendStream(response, content);
-        }
-      } catch (backendError) {
-        console.log("Backend not available, using direct MLVOCA API");
-      }
-
-      // Fallback to direct MLVOCA API call
+      // Use MLVOCA API directly (for GitHub Pages deployment)
       return await handleMLVOCAStream(content);
 
     } catch (err) {
