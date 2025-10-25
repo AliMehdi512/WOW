@@ -69,7 +69,7 @@ export function InputArea({ onSend, disabled = false, externalValue, onExternalV
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask Energetic AI anything..."
+          placeholder="Ask WOW anything..."
           disabled={disabled}
           className="min-h-[60px] max-h-[200px] resize-none border-0 bg-transparent px-6 py-4 text-base focus-visible:ring-0 focus-visible:ring-offset-0 placeholder:text-muted-foreground/60"
           data-testid="input-message"
