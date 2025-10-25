@@ -122,18 +122,27 @@ export function useStreamingChat(): StreamingChatResult {
       agenticActions: null,
     };
 
-    // Call MLVOCA API directly
-    const response = await fetch("https://mlvoca.com/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "tinyllama",
-        prompt: content,
-        stream: true,
-      }),
-    });
+    let response;
+    try {
+      // Call MLVOCA API directly
+      response = await fetch("https://mlvoca.com/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "tinyllama",
+          prompt: content,
+          stream: true,
+        }),
+      });
+    } catch (fetchError) {
+      // CORS or network error - provide helpful error message
+      const errorMessage = fetchError instanceof TypeError && fetchError.message.includes('fetch')
+        ? "Unable to connect to AI service. This may be due to CORS restrictions. Please run with the local backend server at localhost:5000."
+        : fetchError instanceof Error ? fetchError.message : "Unknown error";
+      throw new Error(errorMessage);
+    }
 
     if (!response.ok) {
       throw new Error(`MLVOCA API error: ${response.statusText}`);
