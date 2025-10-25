@@ -162,6 +162,13 @@ export function ChatInterface() {
           ) : displayMessages.length === 0 && !isStreaming ? (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-6 animate-fade-in">
               <div className="w-20 h-20 rounded-full bg-gradient-energetic opacity-20 blur-2xl" />
+              <div className="w-32 h-32 mb-4">
+                <img 
+                  src={`${import.meta.env.BASE_URL}logo.jpg`} 
+                  alt="WOW Logo" 
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="space-y-3">
                 <h2 className="text-2xl font-mono font-bold text-foreground">
                   Welcome to WOW
