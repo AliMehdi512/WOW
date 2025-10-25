@@ -1,0 +1,2 @@
+# No additional Python dependencies needed
+# The app just launches Node.js server
