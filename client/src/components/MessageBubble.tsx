@@ -33,9 +33,9 @@ export function MessageBubble({ message, index }: MessageBubbleProps) {
         {isUser ? (
           <User className="w-5 h-5 text-foreground" />
         ) : (
-          <img 
-            src="/logo.jpg" 
-            alt="Energetic AI" 
+          <img
+            src={`${import.meta.env.BASE_URL}logo.jpg`}
+            alt="Energetic AI"
             className="w-full h-full object-contain"
           />
         )}

@@ -129,7 +129,7 @@ export function ChatInterface() {
             <div className="flex items-center gap-2">
               <div className="w-12 h-12 rounded-lg flex items-center justify-center">
                 <img 
-                  src="/logo.jpg" 
+                  src={`${import.meta.env.BASE_URL}logo.jpg`} 
                   alt="Energetic AI Logo" 
                   className="w-full h-full object-contain"
                 />
@@ -164,7 +164,7 @@ export function ChatInterface() {
               <div className="w-20 h-20 rounded-full bg-gradient-energetic opacity-20 blur-2xl" />
               <div className="space-y-3">
                 <h2 className="text-2xl font-mono font-bold text-foreground">
-                  Welcome to Energetic AI
+                  Welcome to WOW
                 </h2>
                 <p className="text-muted-foreground max-w-md">
                   Experience advanced AI with autonomous decision-making and lightning-fast responses.
@@ -199,7 +199,7 @@ export function ChatInterface() {
                     <div className="flex gap-3 animate-slide-up" data-testid="streaming-message">
                       <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center overflow-hidden">
                         <img 
-                          src="/logo.jpg" 
+                          src={`${import.meta.env.BASE_URL}logo.jpg`} 
                           alt="Energetic AI" 
                           className="w-full h-full object-contain"
                         />

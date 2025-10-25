@@ -3,9 +3,9 @@ export function AIProcessingIndicator() {
     <div className="flex gap-3 animate-slide-up" data-testid="ai-processing-indicator">
       {/* AI Avatar */}
       <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center overflow-hidden">
-        <img 
-          src="/logo.jpg" 
-          alt="Energetic AI" 
+        <img
+          src={`${import.meta.env.BASE_URL}logo.jpg`}
+          alt="Energetic AI"
           className="w-full h-full object-contain"
         />
       </div>
