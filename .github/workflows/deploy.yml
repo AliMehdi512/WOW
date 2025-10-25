@@ -37,7 +37,7 @@ jobs:
         run: npm run build
         env:
           NODE_ENV: production
-          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_URL: https://ali578-wow-api.hf.space/api/chat
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
