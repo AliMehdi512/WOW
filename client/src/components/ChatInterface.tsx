@@ -10,12 +10,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useStreamingChat } from "@/hooks/useStreamingChat";
 import { queryClient } from "@/lib/queryClient";
 import type { Message } from "@shared/schema";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 export function ChatInterface() {
   const [energyLevel, setEnergyLevel] = useState(0);
   const [currentAgenticActions, setCurrentAgenticActions] = useState<string[]>([]);
   const [optimisticUserMessage, setOptimisticUserMessage] = useState<Message | null>(null);
+  const [inputValue, setInputValue] = useState("");
+  const [externalInputValue, setExternalInputValue] = useState<string | undefined>(undefined);
   const { toast } = useToast();
   const { sendMessage, isStreaming, streamingContent, error } = useStreamingChat();
 
@@ -83,7 +85,13 @@ export function ChatInterface() {
   };
 
   const handleSuggestionClick = (suggestion: string) => {
-    handleSendMessage(suggestion);
+    // Set the input value instead of sending immediately
+    setExternalInputValue(suggestion);
+  };
+
+  const handleExternalValueChange = () => {
+    // Clear the external value after it's been applied
+    setExternalInputValue(undefined);
   };
 
   // Show error toast if streaming error occurs
@@ -114,23 +122,21 @@ export function ChatInterface() {
       <div className="fixed inset-0 bg-gradient-radial from-transparent via-transparent to-background/80" />
 
       {/* Main content container */}
-      <div className="relative z-10 flex flex-col h-full max-w-4xl mx-auto">
+      <div className="relative z-10 flex flex-col h-full w-full">
         {/* Header with glassmorphism */}
         <header className="flex-shrink-0 h-16 flex items-center justify-between px-6 backdrop-blur-lg bg-card/30 border-b border-white/10" data-testid="header-main">
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-gradient-energetic flex items-center justify-center">
-                <span className="text-white font-mono font-bold text-sm">E</span>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center">
+                <img 
+                  src="/logo.jpg" 
+                  alt="Energetic AI Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
               <h1 className="text-xl font-mono font-bold bg-gradient-energetic bg-clip-text text-transparent">
-                Energetic AI
+                WOW
               </h1>
-            </div>
-            
-            {/* Connection status indicator */}
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-status-online/10 border border-status-online/20">
-              <div className="w-2 h-2 rounded-full bg-status-online animate-pulse-glow" />
-              <span className="text-xs text-status-online font-medium">CONNECTED</span>
             </div>
           </div>
 
@@ -191,10 +197,14 @@ export function ChatInterface() {
                   <AIProcessingIndicator />
                   {streamingContent && (
                     <div className="flex gap-3 animate-slide-up" data-testid="streaming-message">
-                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-energetic flex items-center justify-center">
-                        <Sparkles className="w-5 h-5 text-white" />
+                      <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center overflow-hidden">
+                        <img 
+                          src="/logo.jpg" 
+                          alt="Energetic AI" 
+                          className="w-full h-full object-contain"
+                        />
                       </div>
-                      <div className="flex-1 max-w-[70%]">
+                      <div className="flex-1 max-w-[85%]">
                         <div className="rounded-2xl px-6 py-4 backdrop-blur-md bg-card/40 border border-white/10 shadow-xl shadow-black/10">
                           <p className="text-base leading-relaxed text-foreground whitespace-pre-wrap">
                             {streamingContent}
@@ -216,6 +226,8 @@ export function ChatInterface() {
             <InputArea 
               onSend={handleSendMessage}
               disabled={isStreaming}
+              externalValue={externalInputValue}
+              onExternalValueChange={handleExternalValueChange}
             />
             
             {displayMessages.length > 0 && !isStreaming && (

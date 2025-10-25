@@ -4,7 +4,7 @@ import { storage } from "./storage";
 import { insertMessageSchema } from "@shared/schema";
 import { z } from "zod";
 
-const MLVO_API_URL = process.env.MLVO_API_URL || "https://api.mlvo.ai/v1/chat/completions";
+const MLVO_API_URL = process.env.MLVO_API_URL || "https://mlvoca.com/api/generate";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -35,8 +35,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Save user message
       const userMessage = await storage.createMessage(userMessageData);
 
-      // Check if client wants streaming (default to non-streaming to match user's API example)
-      const useStreaming = req.body.stream === true;
+      // Check if client wants streaming (default to streaming for better UX)
+      const useStreaming = req.body.stream !== false;
 
       if (useStreaming) {
         // Set up Server-Sent Events for streaming
@@ -69,6 +69,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           // Stream the response
           const reader = mlvoResponse.body?.getReader();
           const decoder = new TextDecoder();
+          let buffer = "";
 
           if (reader) {
             while (true) {
@@ -76,17 +77,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
               if (done) break;
 
               const chunk = decoder.decode(value, { stream: true });
-              aiContent += chunk;
-
-              // Send chunk to client via SSE
-              res.write(`data: ${JSON.stringify({ type: 'chunk', content: chunk })}\n\n`);
+              buffer += chunk;
+              
+              // Process complete lines
+              const lines = buffer.split('\n');
+              buffer = lines.pop() || ""; // Keep incomplete line in buffer
+              
+              for (const line of lines) {
+                if (line.trim()) {
+                  try {
+                    const data = JSON.parse(line);
+                    // Only process and send the response field
+                    if (data.response !== undefined && data.response !== "") {
+                      aiContent += data.response;
+                      // Send only the parsed response text to client
+                      const chunkToSend = { type: 'chunk', content: data.response };
+                      console.log("Sending chunk to client:", chunkToSend);
+                      res.write(`data: ${JSON.stringify(chunkToSend)}\n\n`);
+                    }
+                  } catch (e) {
+                    // If JSON parsing fails, try to extract response using regex
+                    const responseMatch = line.match(/"response":"([^"]*)"/);
+                    if (responseMatch && responseMatch[1]) {
+                      aiContent += responseMatch[1];
+                      res.write(`data: ${JSON.stringify({ type: 'chunk', content: responseMatch[1] })}\n\n`);
+                    }
+                  }
+                }
+              }
             }
           }
         } catch (error) {
-          console.error("Error calling MLVO API:", error);
+          console.error("Error calling MLVOCA API:", error);
+          console.error("API URL:", MLVO_API_URL);
           
           // Fallback response if API fails
-          aiContent = "I'm currently experiencing connectivity issues. This is a demo response to show the interface capabilities. In production, I would provide intelligent responses powered by the MLVO AI engine.";
+          aiContent = "I'm currently experiencing connectivity issues with the MLVOCA API. This is a demo response to show the interface capabilities. The application is working correctly, but the external AI service is temporarily unavailable. In production, I would provide intelligent responses powered by the MLVOCA AI engine.";
           res.write(`data: ${JSON.stringify({ type: 'chunk', content: aiContent })}\n\n`);
           agenticActions = ["Error Recovery", "Fallback Mode"];
         }
@@ -157,9 +183,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
             agenticActions.push("Content Generation");
           }
         } catch (error) {
-          console.error("Error calling MLVO API:", error);
+          console.error("Error calling MLVOCA API:", error);
+          console.error("API URL:", MLVO_API_URL);
           
-          aiContent = "I'm currently experiencing connectivity issues. This is a demo response to show the interface capabilities. In production, I would provide intelligent responses powered by the MLVO AI engine.";
+          aiContent = "I'm currently experiencing connectivity issues with the MLVOCA API. This is a demo response to show the interface capabilities. The application is working correctly, but the external AI service is temporarily unavailable. In production, I would provide intelligent responses powered by the MLVOCA AI engine.";
           responseTime = Date.now() - startTime;
           agenticActions = ["Error Recovery", "Fallback Mode"];
         }

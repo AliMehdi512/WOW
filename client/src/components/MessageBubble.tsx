@@ -23,24 +23,28 @@ export function MessageBubble({ message, index }: MessageBubbleProps) {
       {/* Avatar */}
       <div
         className={cn(
-          "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center",
+          "flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center overflow-hidden",
           isUser
             ? "bg-gradient-to-br from-muted to-secondary"
-            : "bg-gradient-energetic"
+            : ""
         )}
         data-testid={`avatar-${message.role}`}
       >
         {isUser ? (
           <User className="w-5 h-5 text-foreground" />
         ) : (
-          <Sparkles className="w-5 h-5 text-white" />
+          <img 
+            src="/logo.jpg" 
+            alt="Energetic AI" 
+            className="w-full h-full object-contain"
+          />
         )}
       </div>
 
       {/* Message content */}
       <div
         className={cn(
-          "flex-1 max-w-[70%] space-y-2",
+          "flex-1 max-w-[85%] space-y-2",
           isUser ? "items-end" : "items-start"
         )}
       >

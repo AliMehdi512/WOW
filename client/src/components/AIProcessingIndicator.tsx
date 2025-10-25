@@ -1,15 +1,17 @@
-import { Sparkles } from "lucide-react";
-
 export function AIProcessingIndicator() {
   return (
     <div className="flex gap-3 animate-slide-up" data-testid="ai-processing-indicator">
       {/* AI Avatar */}
-      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-energetic flex items-center justify-center">
-        <Sparkles className="w-5 h-5 text-white" />
+      <div className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center overflow-hidden">
+        <img 
+          src="/logo.jpg" 
+          alt="Energetic AI" 
+          className="w-full h-full object-contain"
+        />
       </div>
 
       {/* Processing bubble */}
-      <div className="flex-1 max-w-[70%]">
+      <div className="flex-1 max-w-[85%]">
         <div className="rounded-2xl px-6 py-4 backdrop-blur-md bg-card/40 border border-white/10 shadow-xl shadow-black/10">
           <div className="flex items-center gap-3">
             {/* Processing badge */}

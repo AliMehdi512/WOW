@@ -7,11 +7,26 @@ import { cn } from "@/lib/utils";
 interface InputAreaProps {
   onSend: (content: string) => void;
   disabled?: boolean;
+  externalValue?: string;
+  onExternalValueChange?: () => void;
 }
 
-export function InputArea({ onSend, disabled = false }: InputAreaProps) {
+export function InputArea({ onSend, disabled = false, externalValue, onExternalValueChange }: InputAreaProps) {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Handle external value changes
+  useEffect(() => {
+    if (externalValue !== undefined && externalValue !== input) {
+      setInput(externalValue);
+      if (textareaRef.current) {
+        textareaRef.current.focus();
+      }
+      if (onExternalValueChange) {
+        onExternalValueChange();
+      }
+    }
+  }, [externalValue, input, onExternalValueChange]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
