@@ -103,8 +103,14 @@ export function useStreamingChat(): StreamingChatResult {
 
     let response;
     try {
+      // TODO: Deploy the Cloudflare Worker in the /worker directory to your Cloudflare account
+      // Then update this URL to point to your deployed worker URL
+      // Example: const workerUrl = 'https://wow-proxy.your-username.workers.dev';
+      // For now, trying to call MLVOCA directly (will fail due to CORS)
+      const mlvocaUrl = 'https://mlvoca.com/api/generate';
+      
       // Call MLVOCA API directly
-      response = await fetch("https://mlvoca.com/api/generate", {
+      response = await fetch(mlvocaUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -118,7 +124,7 @@ export function useStreamingChat(): StreamingChatResult {
     } catch (fetchError) {
       // CORS or network error - provide helpful error message
       const errorMessage = fetchError instanceof TypeError && fetchError.message.includes('fetch')
-        ? "Unable to connect to AI service. This may be due to CORS restrictions. Please run with the local backend server at localhost:5000."
+        ? "Unable to connect to AI service. The MLVOCA API doesn't allow CORS from browsers. Please deploy the Cloudflare Worker in the /worker directory or use the backend server at localhost:5000."
         : fetchError instanceof Error ? fetchError.message : "Unknown error";
       throw new Error(errorMessage);
     }
